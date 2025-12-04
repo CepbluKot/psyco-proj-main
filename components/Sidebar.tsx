@@ -11,8 +11,7 @@ import {
   MessageSquare, 
   CreditCard,
   Building2,
-  PenTool,
-  Trello
+  PenTool
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -123,15 +122,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange }) => {
         <div>
           <h3 className="text-xs font-bold text-gray-400 dark:text-gray-500 mb-3 px-2 uppercase tracking-wider">Pages</h3>
           <ul className="space-y-1">
-             <li>
-              <button 
-                onClick={() => onViewChange('jira')}
-                className={`w-full flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors ${getButtonClass('jira')}`}
-              >
-                <Trello size={18} className={getIconClass('jira')} />
-                Jira Board
-              </button>
-            </li>
             <li>
               <button 
                 onClick={() => onViewChange('profile-overview')}

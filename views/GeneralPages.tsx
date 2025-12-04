@@ -1,11 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Gamepad2, Save, Smile, Battery, Coffee, FileText, Download, 
   Users, Zap, ExternalLink, Calendar, Search, ArrowRight, X,
-  CheckCircle2, Clock, MapPin, Tag, MessageSquare, Heart, Shield,
-  Bell, Lock, LogOut, File, FileSpreadsheet, FileBarChart, Image,
-  Briefcase, Shuffle, BrainCircuit, Sparkles, Trophy, Target, ArrowUpRight
+  CheckCircle2, Clock, MapPin, Tag, MessageSquare
 } from 'lucide-react';
 
 // --- SHARED MODAL COMPONENT ---
@@ -136,6 +134,7 @@ export const OverviewView: React.FC = () => {
   );
 };
 
+
 // --- CORPORATE VIEW ---
 export const CorporateView: React.FC = () => {
   const [selectedNews, setSelectedNews] = useState<any>(null);
@@ -147,7 +146,7 @@ export const CorporateView: React.FC = () => {
       date: "Oct 24, 2025",
       category: "Infrastructure",
       image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=600",
-      content: "MTS Web Services announces the opening of a new data center in Vladivostok, improving latency for customers in the region by 40%. This strategic move allows local enterprises to leverage high-performance computing without data transfer delays."
+      content: "MTS Web Services announces the opening of a new data center in Vladivostok, improving latency for customers in the region by 40%..."
     },
     {
       id: 2,
@@ -155,7 +154,7 @@ export const CorporateView: React.FC = () => {
       date: "Oct 10, 2025",
       category: "Product Launch",
       image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=600",
-      content: "The new MWS AI Studio allows enterprise clients to fine-tune LLMs on their private data securely. Features include automated RAG pipelines, dedicated GPU clusters, and enterprise-grade compliance controls."
+      content: "The new MWS AI Studio allows enterprise clients to fine-tune LLMs on their private data securely..."
     },
     {
       id: 3,
@@ -163,47 +162,7 @@ export const CorporateView: React.FC = () => {
       date: "Oct 05, 2025",
       category: "PR",
       image: "https://images.unsplash.com/photo-1544531696-2822a09966ce?auto=format&fit=crop&q=80&w=600",
-      content: "Head of WB Artem Zhulin presented the roadmap for 2026, highlighting integration with ecosystem services. Key takeaways include a unified billing system and cross-product identity management."
-    },
-    {
-      id: 4,
-      title: "MWS achieves ISO 27001 certification for all regions",
-      date: "Sep 28, 2025",
-      category: "Compliance",
-      image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=600",
-      content: "We are proud to announce that our information security management systems have met the rigorous standards of ISO 27001 across all availability zones. This certification reinforces our commitment to data protection for our financial and government clients."
-    },
-    {
-      id: 5,
-      title: "Strategic Partnership with FinTech Giant 'AlphaBank'",
-      date: "Sep 15, 2025",
-      category: "Partnership",
-      image: "https://images.unsplash.com/photo-1560472355-536de3962603?auto=format&fit=crop&q=80&w=600",
-      content: "MTS Web Services has signed a strategic memorandum with AlphaBank to develop a sovereign financial cloud. The project aims to migrate 80% of the bank's non-critical workloads to MWS by Q3 2026."
-    },
-    {
-      id: 6,
-      title: "Green Cloud: Reducing Carbon Footprint by 25%",
-      date: "Sep 01, 2025",
-      category: "Sustainability",
-      image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=600",
-      content: "Our new cooling systems and renewable energy contracts have successfully reduced the carbon footprint of our Moscow region data centers by 25%. We aim for carbon neutrality by 2030."
-    },
-    {
-      id: 7,
-      title: "MWS Academy: Free Cloud Training for University Students",
-      date: "Aug 20, 2025",
-      category: "Education",
-      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=600",
-      content: "We are launching a comprehensive internship and training program for IT students. Top graduates will be offered Junior positions within our Platform Engineering and DevOps teams."
-    },
-    {
-      id: 8,
-      title: "Quarterly Hackathon Winners Announced",
-      date: "Aug 10, 2025",
-      category: "Culture",
-      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=600",
-      content: "Team 'Serverless Surfers' took first place in our internal Q3 Hackathon with their innovative approach to edge computing optimization. They will present their solution at the upcoming All-Hands meeting."
+      content: "Head of WB Artem Zhulin presented the roadmap for 2026, highlighting integration with ecosystem services..."
     }
   ];
 
@@ -216,7 +175,7 @@ export const CorporateView: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {newsItems.map((item) => (
-          <div key={item.id} className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col cursor-pointer" onClick={() => setSelectedNews(item)}>
+          <div key={item.id} className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
             <div className="h-48 overflow-hidden relative">
                <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform hover:scale-105 duration-500" />
                <span className="absolute top-4 left-4 px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-xs font-bold text-slate-800 dark:text-white rounded-lg">
@@ -230,6 +189,7 @@ export const CorporateView: React.FC = () => {
                 {item.content}
               </p>
               <button 
+                onClick={() => setSelectedNews(item)}
                 className="flex items-center gap-2 text-[#E30611] font-bold text-sm hover:gap-3 transition-all"
               >
                 Read Full Story <ArrowRight size={16} />
@@ -243,11 +203,12 @@ export const CorporateView: React.FC = () => {
         <img src={selectedNews?.image} alt={selectedNews?.title} className="w-full h-64 object-cover rounded-xl mb-6" />
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{selectedNews?.title}</h2>
         <p className="text-sm text-gray-400 mb-6">{selectedNews?.date}</p>
-        <p className="leading-relaxed whitespace-pre-wrap">{selectedNews?.content}</p>
+        <p className="leading-relaxed whitespace-pre-wrap">{selectedNews?.content} {selectedNews?.content} {selectedNews?.content}</p>
       </Modal>
     </div>
   );
 };
+
 
 // --- BLOG VIEW ---
 export const BlogView: React.FC = () => {
@@ -370,541 +331,198 @@ export const BlogView: React.FC = () => {
   );
 };
 
-// --- CAMPAIGNS VIEW (Updated) ---
 export const CampaignsView: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'prideboard' | 'hackathons' | 'roulette'>('prideboard');
-  const [rouletteState, setRouletteState] = useState<'intro' | 'scanning' | 'results'>('intro');
+  const [activeTab, setActiveTab] = useState('active');
+  const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
 
-  // MOCK DATA: Prideboard
-  const prideboardTasks = [
-    { id: 1, title: 'Fix CSS in Legacy Dashboard', team: 'Platform Core', time: '1 Day', tags: ['CSS', 'React'], requester: 'Igor Malysh', requesterAvatar: 'https://i.pravatar.cc/150?u=igor' },
-    { id: 2, title: 'API Documentation Review', team: 'DevRel', time: '4 Hours', tags: ['Tech Writing', 'English'], requester: 'Maria I.', requesterAvatar: 'https://i.pravatar.cc/150?u=maria' },
-    { id: 3, title: 'Load Testing Script for Auth', team: 'Security', time: '2 Days', tags: ['Python', 'k6'], requester: 'Oleg S.', requesterAvatar: 'https://i.pravatar.cc/150?u=oleg' },
-    { id: 4, title: 'User Interview Notes Analysis', team: 'Product WB', time: '1 Day', tags: ['Product', 'Analysis'], requester: 'Artem Z.', requesterAvatar: 'https://i.pravatar.cc/150?u=artem' },
+  const campaigns = [
+    { title: "Code Quality Sprint", type: "Engineering", date: "Dec 10-15", participants: 42, progress: 65, status: "Active", desc: "Focus on reducing technical debt and improving test coverage." },
+    { title: "Cloud Migration", type: "Initiative", date: "Q4 2025", participants: 150, progress: 30, status: "Active", desc: "Moving legacy systems to the new MWS cloud infrastructure." },
+    { title: "Security Awareness", type: "Training", date: "Nov 2024", participants: 300, progress: 100, status: "Completed", desc: "Annual security training for all employees." },
   ];
-
-  // MOCK DATA: Hackathons
-  const hackathons = [
-    { id: 1, title: "MWS AI Winter Hack", date: "Dec 15-17", participants: 120, prize: "1,000,000 ₽", status: "Registration Open", image: "https://images.unsplash.com/photo-1639322537228-ad7117a39490?auto=format&fit=crop&q=80&w=400" },
-    { id: 2, title: "Green Cloud Initiative", date: "Nov 05-07", participants: 85, prize: "Eco Trip", status: "Upcoming", image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&q=80&w=400" },
-  ];
-
-  const pastHackathons = [
-    { title: "Serverless Summer '25", winner: "Team Lambda", scoreBoost: "+150 Team Score" },
-    { title: "Security CTF", winner: "WhiteHats", scoreBoost: "+200 Employee Score" },
-  ];
-
-  // MOCK DATA: Shadow Roulette Matches
-  const shadowMatches = [
-    { 
-      id: 1, 
-      team: 'Mobile App Core', 
-      matchReason: '95% Skill Match (React Native)', 
-      dei: 'Diverse Team',
-      task: 'Review navigation gesture handling logic', 
-      slots: 'Tue, Thu', 
-      avatar: 'https://i.pravatar.cc/150?u=dmitry' 
-    },
-    { 
-      id: 2, 
-      team: 'Billing Squad', 
-      matchReason: 'Fresh Perspective Needed', 
-      dei: 'Inclusive Leadership',
-      task: 'Audit invoice generation template flow', 
-      slots: 'Wed', 
-      avatar: 'https://i.pravatar.cc/150?u=maria' 
-    }
-  ];
-
-  const startRoulette = () => {
-    setRouletteState('scanning');
-    setTimeout(() => {
-      setRouletteState('results');
-    }, 2500);
-  };
 
   return (
     <div className="h-full overflow-y-auto p-8 custom-scrollbar bg-[#F3F6FD] dark:bg-slate-900">
-      
-      {/* Header & Tabs */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
+      <div className="flex justify-between items-center mb-8">
         <div>
-           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Campaigns & Initiatives</h1>
-           <p className="text-gray-500 dark:text-gray-400">Engage, contribute, and grow across the ecosystem.</p>
+           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Campaigns</h1>
+           <p className="text-gray-500 dark:text-gray-400">Internal initiatives and hackathons.</p>
         </div>
-        <div className="flex bg-white dark:bg-slate-800 rounded-xl p-1.5 border border-gray-100 dark:border-slate-700 shadow-sm">
-          {[
-            { id: 'prideboard', label: 'Prideboard', icon: <Briefcase size={16}/> },
-            { id: 'hackathons', label: 'Hackathons', icon: <Trophy size={16}/> },
-            { id: 'roulette', label: 'Shadow Roulette', icon: <Shuffle size={16}/> }
-          ].map(tab => (
-            <button 
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-lg transition-all
-                ${activeTab === tab.id 
-                  ? 'bg-[#E30611] text-white shadow-md' 
-                  : 'text-gray-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-slate-700'}`}
-            >
-              {tab.icon}
-              {tab.label}
-            </button>
-          ))}
+        <div className="flex bg-white dark:bg-slate-800 rounded-lg p-1 border border-gray-100 dark:border-slate-700">
+          <button onClick={() => setActiveTab('active')} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${activeTab === 'active' ? 'bg-[#E30611] text-white' : 'text-gray-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white'}`}>Active</button>
+          <button onClick={() => setActiveTab('past')} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${activeTab === 'past' ? 'bg-[#E30611] text-white' : 'text-gray-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white'}`}>Past</button>
         </div>
       </div>
 
-      {/* --- TAB 1: PRIDEBOARD --- */}
-      {activeTab === 'prideboard' && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-2xl mb-8 flex items-start gap-4 border border-blue-100 dark:border-blue-900/50">
-            <div className="p-3 bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 rounded-xl">
-               <Briefcase size={24} />
+      <div className="grid gap-4">
+        {campaigns.filter(c => activeTab === 'active' ? c.status !== 'Completed' : c.status === 'Completed').map((c, i) => (
+          <div key={i} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-4">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl
+                ${c.type === 'Hackathon' ? 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300' : 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300'}`}>
+                {c.title.charAt(0)}
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-800 dark:text-white">{c.title}</h3>
+                <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <span className="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 rounded text-slate-600 dark:text-gray-300 font-medium">{c.type}</span>
+                  <span className="flex items-center gap-1"><Calendar size={12}/> {c.date}</span>
+                  <span className="flex items-center gap-1"><Users size={12}/> {c.participants} joined</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-1">Internal Gig Board</h3>
-              <p className="text-sm text-slate-600 dark:text-gray-300">
-                Pick up short-term tasks (1-2 days) from other teams. Helping others counts towards your <span className="font-bold">Cross-Team Contribution</span> metric.
-              </p>
+            
+            <div className="flex items-center gap-6">
+              <div className="w-32 hidden md:block">
+                <div className="flex justify-between text-xs mb-1">
+                   <span className="font-medium text-slate-600 dark:text-gray-400">Progress</span>
+                   <span className="font-bold text-slate-800 dark:text-white">{c.progress}%</span>
+                </div>
+                <div className="h-1.5 w-full bg-gray-100 dark:bg-slate-700 rounded-full">
+                  <div className="h-full bg-[#E30611] rounded-full" style={{ width: `${c.progress}%` }}></div>
+                </div>
+              </div>
+              <button 
+                onClick={() => setSelectedCampaign(c)}
+                className="px-4 py-2 border border-gray-200 dark:border-slate-600 rounded-lg text-sm font-bold text-slate-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-[#E30611] transition-colors"
+              >
+                Details
+              </button>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-             {prideboardTasks.map(task => (
-               <div key={task.id} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-2">
-                       <img src={task.requesterAvatar} alt={task.requester} className="w-8 h-8 rounded-full border border-white dark:border-slate-600" />
-                       <div className="text-xs">
-                         <div className="font-bold text-slate-800 dark:text-white">{task.requester}</div>
-                         <div className="text-gray-400">{task.team}</div>
-                       </div>
-                    </div>
-                    <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-xs font-bold text-slate-600 dark:text-gray-300 rounded flex items-center gap-1">
-                       <Clock size={12} /> {task.time}
-                    </span>
-                  </div>
-                  
-                  <h4 className="font-bold text-slate-800 dark:text-white mb-2 flex-1">{task.title}</h4>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {task.tags.map(tag => (
-                      <span key={tag} className="text-[10px] font-bold px-2 py-1 rounded bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <button className="w-full py-2 border border-[#E30611] text-[#E30611] font-bold rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors text-sm">
-                    Apply for Gig
-                  </button>
-               </div>
-             ))}
-             
-             {/* Add New Card */}
-             <div className="border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl flex flex-col items-center justify-center p-6 text-gray-400 hover:text-slate-600 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-slate-600 transition-colors cursor-pointer min-h-[200px]">
-                <div className="w-12 h-12 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-2">
-                  <Briefcase size={24} />
-                </div>
-                <span className="font-bold text-sm">Post a Request</span>
-             </div>
-          </div>
-        </div>
-      )}
-
-      {/* --- TAB 2: HACKATHONS --- */}
-      {activeTab === 'hackathons' && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
-           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
-              {/* Upcoming Events */}
-              <div className="lg:col-span-2 space-y-6">
-                 <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                   <Calendar size={20} /> Upcoming Events
-                 </h3>
-                 {hackathons.map(hack => (
-                   <div key={hack.id} className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 overflow-hidden shadow-sm flex flex-col md:flex-row">
-                      <div className="w-full md:w-48 h-48 md:h-auto shrink-0 relative">
-                        <img src={hack.image} alt={hack.title} className="w-full h-full object-cover" />
-                        <div className="absolute top-2 left-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur px-2 py-1 rounded text-xs font-bold text-slate-800 dark:text-white">
-                          {hack.status}
-                        </div>
-                      </div>
-                      <div className="p-6 flex-1 flex flex-col justify-center">
-                        <div className="flex justify-between items-start mb-2">
-                           <h4 className="text-xl font-bold text-slate-800 dark:text-white">{hack.title}</h4>
-                           <span className="text-sm font-bold text-[#E30611]">{hack.prize} Pool</span>
-                        </div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 flex items-center gap-4">
-                           <span className="flex items-center gap-1"><Clock size={14}/> {hack.date}</span>
-                           <span className="flex items-center gap-1"><Users size={14}/> {hack.participants} Joined</span>
-                        </p>
-                        
-                        <div className="flex gap-3">
-                           <button className="px-6 py-2 bg-[#E30611] text-white font-bold rounded-lg hover:bg-red-700 transition-colors">
-                             Register Team
-                           </button>
-                           <button className="px-6 py-2 border border-gray-200 dark:border-slate-600 text-slate-700 dark:text-gray-300 font-bold rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                             Details
-                           </button>
-                        </div>
-                      </div>
-                   </div>
-                 ))}
-              </div>
-
-              {/* Past Results Sidebar */}
-              <div className="space-y-6">
-                 <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                   <Trophy size={20} className="text-yellow-500" /> Hall of Fame
-                 </h3>
-                 <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm">
-                    <div className="space-y-6">
-                       {pastHackathons.map((ph, i) => (
-                         <div key={i} className="flex items-center justify-between pb-4 border-b border-gray-50 dark:border-slate-700 last:border-0 last:pb-0">
-                            <div>
-                               <div className="text-xs text-gray-400 mb-1">{ph.title}</div>
-                               <div className="font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                                 <Trophy size={14} className="text-yellow-500" /> {ph.winner}
-                               </div>
-                            </div>
-                            <span className="px-2 py-1 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 text-xs font-bold rounded">
-                              {ph.scoreBoost}
-                            </span>
-                         </div>
-                       ))}
-                    </div>
-                    <button className="w-full mt-6 py-2 text-sm font-bold text-slate-500 dark:text-gray-400 hover:text-[#E30611] border border-dashed border-gray-200 dark:border-slate-700 rounded-lg">
-                      View All History
-                    </button>
-                 </div>
-                 
-                 <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-2xl text-white">
-                    <h4 className="font-bold mb-2">Why Participate?</h4>
-                    <ul className="text-sm text-gray-300 space-y-2 list-disc pl-4">
-                      <li>Boost Team & Employee Score</li>
-                      <li>Cross-functional networking</li>
-                      <li>Direct impact on roadmap</li>
-                    </ul>
-                 </div>
-              </div>
-
-           </div>
-        </div>
-      )}
-
-      {/* --- TAB 3: SHADOW ROULETTE (AI) --- */}
-      {activeTab === 'roulette' && (
-        <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-300 h-full flex flex-col">
-          
-          {/* INTRO STATE */}
-          {rouletteState === 'intro' && (
-             <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
-                <div className="w-24 h-24 bg-gradient-to-br from-[#E30611] to-purple-600 rounded-full flex items-center justify-center mb-8 shadow-xl shadow-red-500/20">
-                   <BrainCircuit size={48} className="text-white" />
-                </div>
-                <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-4">Shadow Roulette</h2>
-                <p className="text-lg text-slate-600 dark:text-gray-300 max-w-lg mb-8 leading-relaxed">
-                  Ready to explore? FlowAI analyzes your <b>Timeline</b>, <b>Skills</b>, and <b>DEI Profile</b> to match you with a team for a 1-day shadow visit.
-                </p>
-                
-                <div className="flex flex-col gap-4 w-full max-w-sm">
-                   <div className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
-                      <span className="font-bold text-slate-800 dark:text-white">Ready for Shadow</span>
-                      <div className="w-12 h-6 bg-green-500 rounded-full relative cursor-pointer">
-                         <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm"></div>
-                      </div>
-                   </div>
-                   <button 
-                     onClick={startRoulette}
-                     className="w-full py-4 bg-[#E30611] text-white font-bold text-lg rounded-xl shadow-lg hover:bg-red-700 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
-                   >
-                     <Sparkles size={20} /> Find My Match
-                   </button>
-                </div>
-                
-                <p className="mt-8 text-xs text-gray-400">
-                  Shadow Roulette = managed internal mobility & knowledge exchange embedded in your metrics.
-                </p>
-             </div>
-          )}
-
-          {/* SCANNING STATE */}
-          {rouletteState === 'scanning' && (
-             <div className="flex-1 flex flex-col items-center justify-center">
-                <div className="relative mb-8">
-                   <div className="w-32 h-32 rounded-full border-4 border-gray-100 dark:border-slate-700"></div>
-                   <div className="absolute inset-0 rounded-full border-4 border-t-[#E30611] border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
-                   <BrainCircuit size={48} className="absolute inset-0 m-auto text-slate-300 dark:text-slate-600" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">FlowAI is analyzing...</h3>
-                <div className="flex flex-col gap-2 text-sm text-gray-500">
-                   <div className="flex items-center gap-2 animate-pulse"><CheckCircle2 size={14} className="text-[#E30611]"/> Checking Timeline availability...</div>
-                   <div className="flex items-center gap-2 animate-pulse delay-75"><CheckCircle2 size={14} className="text-[#E30611]"/> Mapping Skill Gaps...</div>
-                   <div className="flex items-center gap-2 animate-pulse delay-150"><CheckCircle2 size={14} className="text-[#E30611]"/> Reviewing DEI & Connections...</div>
-                </div>
-             </div>
-          )}
-
-          {/* RESULTS STATE */}
-          {rouletteState === 'results' && (
-             <div className="py-6">
-                <div className="flex items-center justify-between mb-6">
-                   <h2 className="text-xl font-bold text-slate-800 dark:text-white">We found 2 perfect matches!</h2>
-                   <button onClick={() => setRouletteState('intro')} className="text-sm font-bold text-gray-400 hover:text-slate-800">Reset</button>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   {shadowMatches.map(match => (
-                     <div key={match.id} className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-300">
-                        {/* Match Header */}
-                        <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-white relative">
-                           <div className="flex items-center gap-4 mb-4">
-                              <img src={match.avatar} className="w-12 h-12 rounded-full border-2 border-white/20" alt="lead" />
-                              <div>
-                                 <h3 className="font-bold text-lg">{match.team}</h3>
-                                 <div className="text-xs text-slate-300">{match.dei}</div>
-                              </div>
-                           </div>
-                           <div className="absolute top-6 right-6 px-3 py-1 bg-[#E30611] rounded-full text-xs font-bold shadow-lg">
-                              {match.matchReason}
-                           </div>
-                        </div>
-                        
-                        {/* Match Body */}
-                        <div className="p-6 flex-1 flex flex-col">
-                           <div className="mb-4">
-                              <h4 className="text-xs font-bold text-gray-400 uppercase mb-2">Mini-Task</h4>
-                              <p className="text-sm font-medium text-slate-800 dark:text-white bg-gray-50 dark:bg-slate-900/50 p-3 rounded-lg border border-gray-100 dark:border-slate-700">
-                                 {match.task}
-                              </p>
-                           </div>
-                           
-                           <div className="mb-6">
-                              <h4 className="text-xs font-bold text-gray-400 uppercase mb-2">Available Slots</h4>
-                              <div className="flex gap-2">
-                                 {match.slots.split(', ').map(slot => (
-                                    <span key={slot} className="px-3 py-1 rounded bg-gray-100 dark:bg-slate-700 text-sm font-bold text-slate-600 dark:text-gray-300">
-                                       {slot}
-                                    </span>
-                                 ))}
-                              </div>
-                           </div>
-
-                           <button className="w-full mt-auto py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-                              Book Shadow Visit <ArrowUpRight size={16} />
-                           </button>
-                        </div>
-                     </div>
-                   ))}
-                </div>
-
-                <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/10 rounded-xl flex items-start gap-3 text-sm text-blue-800 dark:text-blue-300">
-                   <Target size={20} className="shrink-0 mt-0.5" />
-                   <p>
-                      <b>Pro Tip:</b> After your visit, log your findings and ideas in the <b>Timeline</b> to boost your Collaboration Score. 
-                      Feedback automatically flows into the host team's backlog.
-                   </p>
-                </div>
-             </div>
-          )}
-        </div>
-      )}
-
-    </div>
-  );
-};
-
-// --- TAMAGOTCHI VIEW ---
-export const TamagotchiView: React.FC = () => {
-  const [stats, setStats] = useState({ hunger: 80, happiness: 60, energy: 40 });
-  const [message, setMessage] = useState("I'm ready to work!");
-
-  const interact = (type: 'feed' | 'play' | 'sleep') => {
-    if (type === 'feed') {
-      setStats(prev => ({ ...prev, hunger: Math.min(100, prev.hunger + 20) }));
-      setMessage("Yummy! Let's code.");
-    } else if (type === 'play') {
-      setStats(prev => ({ ...prev, happiness: Math.min(100, prev.happiness + 15), energy: Math.max(0, prev.energy - 10) }));
-      setMessage("That was fun! But I'm tired.");
-    } else if (type === 'sleep') {
-      setStats(prev => ({ ...prev, energy: Math.min(100, prev.energy + 30) }));
-      setMessage("Zzz... recharging.");
-    }
-  };
-
-  return (
-    <div className="h-full flex flex-col items-center justify-center p-8 bg-[#F3F6FD] dark:bg-slate-900">
-      <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-slate-700 text-center relative overflow-hidden">
+        ))}
         
-        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 to-purple-500"></div>
-        
-        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">My DevPet</h2>
-        <p className="text-gray-500 text-sm mb-8">{message}</p>
-
-        <div className="w-48 h-48 mx-auto bg-gray-100 dark:bg-slate-900 rounded-full flex items-center justify-center mb-8 relative">
-           {/* Simple CSS Pet */}
-           <div className="relative animate-bounce">
-              <Gamepad2 size={80} className="text-[#E30611]" />
-              <div className="absolute -top-1 -right-1">
-                 {stats.happiness > 80 ? <Heart size={24} className="text-pink-500 fill-current animate-pulse" /> : null}
-              </div>
-           </div>
-        </div>
-
-        <div className="space-y-4 mb-8">
-           <div>
-             <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
-               <span>Hunger</span>
-               <span>{stats.hunger}%</span>
-             </div>
-             <div className="h-2 w-full bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
-               <div className="h-full bg-green-500 transition-all duration-500" style={{ width: `${stats.hunger}%` }}></div>
-             </div>
-           </div>
-           <div>
-             <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
-               <span>Happiness</span>
-               <span>{stats.happiness}%</span>
-             </div>
-             <div className="h-2 w-full bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
-               <div className="h-full bg-pink-500 transition-all duration-500" style={{ width: `${stats.happiness}%` }}></div>
-             </div>
-           </div>
-           <div>
-             <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
-               <span>Energy</span>
-               <span>{stats.energy}%</span>
-             </div>
-             <div className="h-2 w-full bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
-               <div className="h-full bg-blue-500 transition-all duration-500" style={{ width: `${stats.energy}%` }}></div>
-             </div>
-           </div>
-        </div>
-
-        <div className="flex justify-center gap-4">
-           <button onClick={() => interact('feed')} className="p-3 bg-green-50 text-green-600 rounded-xl hover:bg-green-100 transition-colors">
-             <Coffee size={24} />
-           </button>
-           <button onClick={() => interact('play')} className="p-3 bg-pink-50 text-pink-600 rounded-xl hover:bg-pink-100 transition-colors">
-             <Smile size={24} />
-           </button>
-           <button onClick={() => interact('sleep')} className="p-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-colors">
-             <Battery size={24} />
-           </button>
-        </div>
+        {campaigns.filter(c => activeTab === 'active' ? c.status !== 'Completed' : c.status === 'Completed').length === 0 && (
+           <div className="text-center py-12 text-gray-400">No campaigns found in this category.</div>
+        )}
       </div>
+
+      <Modal isOpen={!!selectedCampaign} onClose={() => setSelectedCampaign(null)} title={selectedCampaign?.title}>
+         <div className="mb-4">
+            <span className="inline-block px-2 py-1 bg-gray-100 dark:bg-slate-700 text-slate-700 dark:text-gray-300 text-xs font-bold rounded mb-2">{selectedCampaign?.type}</span>
+            <p className="text-slate-600 dark:text-gray-300">{selectedCampaign?.desc}</p>
+         </div>
+         <div className="grid grid-cols-2 gap-4 mb-4">
+           <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-xl">
+              <div className="text-2xl font-bold text-[#E30611]">{selectedCampaign?.participants}</div>
+              <div className="text-xs text-gray-400 uppercase">Participants</div>
+           </div>
+           <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-xl">
+              <div className="text-2xl font-bold text-slate-800 dark:text-white">{selectedCampaign?.progress}%</div>
+              <div className="text-xs text-gray-400 uppercase">Completion</div>
+           </div>
+         </div>
+         <button onClick={() => alert('Joined campaign!')} className="w-full py-2 bg-[#E30611] text-white font-bold rounded-lg hover:bg-red-700">Join Campaign</button>
+      </Modal>
     </div>
   );
 };
 
-// --- ACCOUNT VIEW ---
-export const AccountView: React.FC = () => {
-  return (
-    <div className="h-full overflow-y-auto p-8 custom-scrollbar bg-[#F3F6FD] dark:bg-slate-900">
-      <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">Account Settings</h1>
-      
-      <div className="max-w-3xl space-y-6">
-        {/* Profile Section */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm">
-           <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Profile Information</h3>
-           <div className="flex items-start gap-6">
-              <img src="https://i.pravatar.cc/150?u=ekaterina" className="w-20 h-20 rounded-full border-4 border-gray-100 dark:border-slate-700" alt="Profile" />
-              <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-                 <div>
-                   <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Full Name</label>
-                   <input type="text" value="Ekaterina Tyukavkina" className="w-full px-3 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white" readOnly />
-                 </div>
-                 <div>
-                   <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Email</label>
-                   <input type="email" value="e.tyukavkina@mts.ru" className="w-full px-3 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white" readOnly />
-                 </div>
-                 <div>
-                   <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Role</label>
-                   <input type="text" value="CEO" className="w-full px-3 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white" readOnly />
-                 </div>
-                 <div>
-                   <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Department</label>
-                   <input type="text" value="Executive" className="w-full px-3 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white" readOnly />
-                 </div>
-              </div>
-           </div>
-        </div>
-
-        {/* Security Section */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm">
-           <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Security</h3>
-           <div className="space-y-4">
-             <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-900 rounded-xl">
-               <div className="flex items-center gap-3">
-                 <Lock size={20} className="text-gray-400" />
-                 <div>
-                   <div className="font-bold text-sm text-slate-800 dark:text-white">Password</div>
-                   <div className="text-xs text-gray-500">Last changed 3 months ago</div>
-                 </div>
-               </div>
-               <button className="text-xs font-bold text-[#E30611] hover:underline">Update</button>
-             </div>
-             <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-900 rounded-xl">
-               <div className="flex items-center gap-3">
-                 <Shield size={20} className="text-gray-400" />
-                 <div>
-                   <div className="font-bold text-sm text-slate-800 dark:text-white">Two-Factor Authentication</div>
-                   <div className="text-xs text-green-500 font-bold">Enabled</div>
-                 </div>
-               </div>
-               <button className="text-xs font-bold text-gray-500 hover:text-slate-800 dark:hover:text-white">Configure</button>
-             </div>
-           </div>
-        </div>
-        
-        <div className="pt-4 border-t border-gray-200 dark:border-slate-700 flex justify-end">
-           <button className="flex items-center gap-2 text-red-600 font-bold text-sm px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
-             <LogOut size={16} /> Sign Out
-           </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- DOCUMENTS VIEW ---
 export const DocumentsView: React.FC = () => {
+  const [search, setSearch] = useState('');
+
   const docs = [
-    { name: 'Employee Handbook 2025.pdf', type: 'PDF', date: 'Oct 01', size: '2.4 MB', icon: <File size={24} className="text-red-500"/> },
-    { name: 'Q3 Financial Report.xlsx', type: 'Excel', date: 'Sep 28', size: '1.1 MB', icon: <FileSpreadsheet size={24} className="text-green-500"/> },
-    { name: 'Brand Assets Pack.zip', type: 'Archive', date: 'Sep 15', size: '45 MB', icon: <Image size={24} className="text-blue-500"/> },
-    { name: 'Project Alpha Spec.docx', type: 'Word', date: 'Aug 30', size: '800 KB', icon: <FileText size={24} className="text-blue-400"/> },
-    { name: 'Security Policy v2.pdf', type: 'PDF', date: 'Aug 10', size: '3.2 MB', icon: <File size={24} className="text-red-500"/> },
-    { name: 'Marketing Strategy 2026.pptx', type: 'PowerPoint', date: 'Jul 20', size: '12 MB', icon: <FileBarChart size={24} className="text-orange-500"/> },
+    { name: "MWS_Platform_Architecture.pdf", size: "2.4 MB", type: "PDF", date: "Today" },
+    { name: "Q4_Budget_Forecast.xlsx", size: "1.1 MB", type: "XLSX", date: "Yesterday" },
+    { name: "DevEx_Strategy_2026.docx", size: "450 KB", type: "DOCX", date: "Dec 1" },
+    { name: "Cloud_Network_Diagram.png", size: "8.9 MB", type: "PNG", date: "Nov 28" },
+    { name: "Employee_Handbook.pdf", size: "3.2 MB", type: "PDF", date: "Nov 15" },
   ];
+
+  const filteredDocs = docs.filter(d => d.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="h-full overflow-y-auto p-8 custom-scrollbar bg-[#F3F6FD] dark:bg-slate-900">
       <div className="flex justify-between items-end mb-8">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Documents</h1>
-          <p className="text-gray-500 dark:text-gray-400">Company policies, templates, and reports.</p>
+          <p className="text-gray-500 dark:text-gray-400">Specs, Requirements, and Architectural Decision Records.</p>
         </div>
-        <button className="px-4 py-2 bg-[#E30611] text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-red-700 transition-colors">
-          <Download size={16} /> Upload New
-        </button>
+        <div className="relative">
+          <input 
+            type="text" 
+            placeholder="Search docs..." 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:border-[#E30611] w-64 text-slate-800 dark:text-white" 
+          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {docs.map((doc, i) => (
-          <div key={i} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-             <div className="flex justify-between items-start mb-4">
-               <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl group-hover:scale-110 transition-transform">
-                 {doc.icon}
-               </div>
-               <button className="text-gray-300 hover:text-slate-600 dark:hover:text-white"><Download size={16}/></button>
-             </div>
-             <h3 className="text-sm font-bold text-slate-800 dark:text-white mb-1 truncate">{doc.name}</h3>
-             <div className="flex items-center gap-3 text-xs text-gray-400">
-               <span>{doc.date}</span>
-               <span>•</span>
-               <span>{doc.size}</span>
-             </div>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm overflow-hidden">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="bg-gray-50 dark:bg-slate-900 border-b border-gray-100 dark:border-slate-700 text-xs uppercase text-gray-500 font-bold">
+               <th className="px-6 py-4">Name</th>
+               <th className="px-6 py-4">Type</th>
+               <th className="px-6 py-4">Size</th>
+               <th className="px-6 py-4">Modified</th>
+               <th className="px-6 py-4">Action</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
+            {filteredDocs.map((doc, i) => (
+              <tr key={i} className="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors group">
+                <td className="px-6 py-4 flex items-center gap-3">
+                  <div className="w-8 h-8 rounded bg-red-50 dark:bg-red-900/20 text-[#E30611] flex items-center justify-center">
+                    <FileText size={16} />
+                  </div>
+                  <span className="text-sm font-medium text-slate-700 dark:text-gray-200">{doc.name}</span>
+                </td>
+                <td className="px-6 py-4 text-xs font-bold text-gray-500">{doc.type}</td>
+                <td className="px-6 py-4 text-sm text-gray-500">{doc.size}</td>
+                <td className="px-6 py-4 text-sm text-gray-500">{doc.date}</td>
+                <td className="px-6 py-4">
+                  <button className="text-gray-400 hover:text-[#E30611] transition-colors" title="Download">
+                    <Download size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {filteredDocs.length === 0 && (
+               <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-400">No documents found.</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+interface FollowersProps {
+  onMessage: (userId: string) => void;
+}
+
+export const FollowersView: React.FC<FollowersProps> = ({ onMessage }) => {
+  const followers = [
+    { id: 'andrey', name: "Andrey Shtanov", role: "CCO", avatar: "https://i.pravatar.cc/150?u=andrey" },
+    { id: 'oleg', name: "Oleg Sidorenkov", role: "CTO", avatar: "https://i.pravatar.cc/150?u=oleg" },
+    { id: 'igor', name: "Igor Malysh", role: "Chief DevEx", avatar: "https://i.pravatar.cc/150?u=igor" },
+    { id: 'artem', name: "Artem Zhulin", role: "Head of WB", avatar: "https://i.pravatar.cc/150?u=artem" },
+  ];
+
+  return (
+    <div className="h-full overflow-y-auto p-8 custom-scrollbar bg-[#F3F6FD] dark:bg-slate-900">
+      <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Followers</h1>
+      <p className="text-gray-500 dark:text-gray-400 mb-8">People following your technical contributions.</p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {followers.map((f, i) => (
+          <div key={i} className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <img src={f.avatar} alt={f.name} className="w-10 h-10 rounded-full object-cover border border-gray-100 dark:border-slate-600" />
+              <div>
+                <div className="text-sm font-bold text-slate-800 dark:text-white">{f.name}</div>
+                <div className="text-xs text-gray-400">{f.role}</div>
+              </div>
+            </div>
+            <button 
+              onClick={() => onMessage(f.id)}
+              className="px-3 py-1 text-xs font-bold text-[#E30611] bg-red-50 dark:bg-red-900/20 rounded-lg hover:bg-[#E30611] hover:text-white transition-colors"
+            >
+              Message
+            </button>
           </div>
         ))}
       </div>
@@ -912,40 +530,100 @@ export const DocumentsView: React.FC = () => {
   );
 };
 
-// --- FOLLOWERS VIEW ---
-export const FollowersView: React.FC<{ onMessage: (id: string) => void }> = ({ onMessage }) => {
-  const followers = [
-    { id: 'oleg', name: 'Oleg Sidorenkov', role: 'CTO', avatar: 'https://i.pravatar.cc/150?u=oleg' },
-    { id: 'igor', name: 'Igor Malysh', role: 'Chief DevEx', avatar: 'https://i.pravatar.cc/150?u=igor' },
-    { id: 'andrey', name: 'Andrey Shtanov', role: 'CCO', avatar: 'https://i.pravatar.cc/150?u=andrey' },
-    { id: 'artem', name: 'Artem Zhulin', role: 'Head of WB', avatar: 'https://i.pravatar.cc/150?u=artem' },
-    { id: 'maria', name: 'Maria Ivanova', role: 'HR Director', avatar: 'https://i.pravatar.cc/150?u=maria' },
-    { id: 'dmitry', name: 'Dmitry Petrov', role: 'Lead Designer', avatar: 'https://i.pravatar.cc/150?u=dmitry' },
-  ];
+export const AccountView: React.FC = () => {
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert("Account settings saved successfully.");
+  };
 
   return (
     <div className="h-full overflow-y-auto p-8 custom-scrollbar bg-[#F3F6FD] dark:bg-slate-900">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Followers</h1>
-        <p className="text-gray-500 dark:text-gray-400">Colleagues following your updates.</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {followers.map((user) => (
-          <div key={user.id} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm flex items-center gap-4">
-             <img src={user.avatar} className="w-16 h-16 rounded-full border-4 border-gray-50 dark:border-slate-900" alt={user.name} />
-             <div className="flex-1">
-               <h3 className="font-bold text-slate-800 dark:text-white">{user.name}</h3>
-               <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{user.role}</p>
-               <button 
-                 onClick={() => onMessage(user.id)}
-                 className="text-xs font-bold text-[#E30611] border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10 px-3 py-1.5 rounded-full hover:bg-[#E30611] hover:text-white transition-colors"
-               >
-                 Message
-               </button>
-             </div>
+      <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">Account Settings</h1>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-8 max-w-2xl">
+        <form className="space-y-6" onSubmit={handleSave}>
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">First Name</label>
+              <input type="text" defaultValue="Ekaterina" className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-[#E30611] text-slate-800 dark:text-white" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">Last Name</label>
+              <input type="text" defaultValue="Tyukavkina" className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-[#E30611] text-slate-800 dark:text-white" />
+            </div>
           </div>
-        ))}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">Email</label>
+            <input type="email" defaultValue="e.tyukavkina@mts.ru" className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-[#E30611] text-slate-800 dark:text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">Role</label>
+            <input type="text" defaultValue="CEO" disabled className="w-full px-4 py-2 bg-gray-100 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg text-sm text-gray-500 dark:text-gray-400" />
+          </div>
+          <div className="pt-4 flex justify-end">
+            <button type="submit" className="flex items-center gap-2 bg-[#E30611] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-colors">
+              <Save size={16} />
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export const TamagotchiView: React.FC = () => {
+  const [energy, setEnergy] = useState(85);
+  const [happy, setHappy] = useState(true);
+
+  const feed = () => {
+    setEnergy(Math.min(100, energy + 10));
+    setHappy(true);
+  };
+
+  return (
+    <div className="h-full flex flex-col items-center justify-center p-8 bg-[#F3F6FD] dark:bg-slate-900">
+      <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-gray-100 dark:border-slate-700 shadow-lg max-w-md w-full text-center relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-400 to-[#E30611]"></div>
+        
+        <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-1">Team Spirit</h2>
+        <p className="text-xs text-gray-400 mb-8">Your digital team health companion</p>
+
+        <div className="w-48 h-48 bg-red-50 dark:bg-red-900/10 rounded-full mx-auto mb-8 flex items-center justify-center relative group cursor-pointer transition-transform hover:scale-105">
+          <div className="text-6xl animate-bounce">{happy ? '👾' : '😴'}</div>
+          
+          <div className="absolute -right-4 top-0 bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-xs font-bold text-green-600 dark:text-green-400 border border-green-100 dark:border-green-900/30 opacity-0 group-hover:opacity-100 transition-opacity">
+             Merge PR!
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4 mb-8">
+           <div className="flex flex-col items-center gap-2">
+             <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl">
+               <Smile size={20} />
+             </div>
+             <span className="text-xs font-medium text-slate-600 dark:text-gray-400">{happy ? 'Happy' : 'Sleepy'}</span>
+           </div>
+           <div className="flex flex-col items-center gap-2">
+             <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400 rounded-xl">
+               <Battery size={20} />
+             </div>
+             <span className="text-xs font-medium text-slate-600 dark:text-gray-400">{energy}% Energy</span>
+           </div>
+           <div className="flex flex-col items-center gap-2">
+             <div className="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-xl">
+               <Coffee size={20} />
+             </div>
+             <span className="text-xs font-medium text-slate-600 dark:text-gray-400">Caffeinated</span>
+           </div>
+        </div>
+
+        <button 
+          onClick={feed}
+          className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-medium text-sm hover:bg-slate-700 dark:hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 active:scale-95 transform"
+        >
+          <Gamepad2 size={16} />
+          Feed with Code
+        </button>
       </div>
     </div>
   );

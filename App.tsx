@@ -9,7 +9,6 @@ import EmployeeView from './views/EmployeeView';
 import ProjectsView from './views/ProjectsView';
 import LearningView from './views/LearningView';
 import ProfileView from './views/ProfileView';
-import JiraView from './views/JiraView';
 import { 
   TamagotchiView, 
   AccountView, 
@@ -201,7 +200,6 @@ const App: React.FC = () => {
     if (currentView === 'overview') return ['Favorites', 'Overview'];
     if (currentView === 'projects') return ['Favorites', 'Projects'];
     if (currentView === 'courses') return ['Dashboards', 'Online Courses'];
-    if (currentView === 'jira') return ['Pages', 'Jira Board'];
     if (currentView === 'account') return ['Pages', 'Account'];
     if (currentView === 'corporate') return ['Pages', 'Corporate'];
     if (currentView === 'blog') return ['Pages', 'Blog'];
@@ -218,7 +216,6 @@ const App: React.FC = () => {
       case 'messenger': return <MessengerView targetUserId={targetChatUser} onClearTarget={() => setTargetChatUser(null)} />;
       case 'projects': return <ProjectsView />;
       case 'courses': return <LearningView />;
-      case 'jira': return <JiraView />;
       case 'profile-overview': return <ProfileView />;
       case 'profile-tamagotchi': return <TamagotchiView />;
       case 'profile-campaigns': return <CampaignsView />;
@@ -240,7 +237,6 @@ const App: React.FC = () => {
     { id: 'dashboard-team', label: 'Team Dashboard', section: 'Dashboards' },
     { id: 'dashboard-employee', label: 'Employee Dashboard', section: 'Dashboards' },
     { id: 'courses', label: 'Online Courses', section: 'Dashboards' },
-    { id: 'jira', label: 'Jira Board', section: 'Pages' },
     { id: 'profile-overview', label: 'User Profile', section: 'Pages' },
     { id: 'corporate', label: 'Corporate News', section: 'Pages' },
     { id: 'blog', label: 'Engineering Blog', section: 'Pages' },
