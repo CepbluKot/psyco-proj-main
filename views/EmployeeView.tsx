@@ -1,19 +1,358 @@
 
 import React, { useState } from 'react';
-import { MoreHorizontal, ArrowUpRight, Github, Code, Plus, X, Upload, CheckSquare, Square } from 'lucide-react';
+import { 
+  MoreHorizontal, 
+  ArrowUpRight, 
+  Github, 
+  Code, 
+  Plus, 
+  X, 
+  Upload, 
+  CheckSquare, 
+  Square,
+  ChevronDown,
+  ChevronUp,
+  Database,
+  Lightbulb,
+  TrendingUp,
+  Target,
+  BrainCircuit,
+  Info,
+  Battery,
+  Zap,
+  Users,
+  Award,
+  BookOpen
+} from 'lucide-react';
 
-const initialEmployees = [
-  { id: 1, name: 'Ekaterina Tyukavkina', role: 'CEO', dept: 'Executive', grade: 'E10', score: 9.9, potential: 'High', status: 'Top Performer', avatar: 'https://i.pravatar.cc/150?u=ekaterina' },
-  { id: 2, name: 'Oleg Sidorenkov', role: 'CTO', dept: 'Engineering', grade: 'E9', score: 9.8, potential: 'High', status: 'Top Performer', avatar: 'https://i.pravatar.cc/150?u=oleg' },
-  { id: 3, name: 'Igor Malysh', role: 'Chief DevEx', dept: 'Platform', grade: 'E8', score: 9.5, potential: 'High', status: 'Rising Star', avatar: 'https://i.pravatar.cc/150?u=igor' },
-  { id: 4, name: 'Andrey Shtanov', role: 'CCO', dept: 'Business', grade: 'E9', score: 9.2, potential: 'High', status: 'Stable', avatar: 'https://i.pravatar.cc/150?u=andrey' },
-  { id: 5, name: 'Artem Zhulin', role: 'Head of WB', dept: 'Product', grade: 'E8', score: 8.8, potential: 'Medium', status: 'Rising Star', avatar: 'https://i.pravatar.cc/150?u=artem' },
+// --- Types for Advanced Metrics ---
+interface MetricBreakdown {
+  label: string;
+  value: number; // 0.0 to 1.0 normalized
+  weight: number;
+  description: string;
+}
+
+interface PerformanceMetric {
+  code: string; // E1, E2, etc.
+  title: string;
+  score: number; // 1-10
+  formula: string;
+  components: MetricBreakdown[];
+}
+
+interface EmployeeDetails {
+  metrics: {
+    delivery: PerformanceMetric;
+    hardSkills: PerformanceMetric;
+    softSkills: PerformanceMetric;
+    sustainability: PerformanceMetric;
+  };
+  sources: string[];
+  summary: string;
+  recommendations: string[];
+}
+
+interface Employee {
+  id: number;
+  name: string;
+  role: string;
+  dept: string;
+  grade: string;
+  score: number;
+  potential: string;
+  status: string;
+  avatar: string;
+  details: EmployeeDetails;
+}
+
+// --- MOCK DATA ---
+const initialEmployees: Employee[] = [
+  { 
+    id: 1, 
+    name: 'Ekaterina Tyukavkina', 
+    role: 'CEO', 
+    dept: 'Executive', 
+    grade: 'E10', 
+    score: 9.9, 
+    potential: 'High', 
+    status: 'Top Performer', 
+    avatar: 'https://i.pravatar.cc/150?u=ekaterina',
+    details: {
+      metrics: { 
+        delivery: {
+          code: 'E1',
+          title: 'Contribution & Impact',
+          score: 9.9,
+          formula: '1 + 9 * clamp(0.4·TASK + 0.25·INCIDENT + 0.2·RELEASE + 0.15·CROSS_TEAM)',
+          components: [
+            { label: 'Task Completion (Weighted)', value: 0.98, weight: 0.4, description: 'High-priority strategic goals achieved.' },
+            { label: 'Incident Contribution', value: 0.85, weight: 0.25, description: 'Critical incident resolution leadership.' },
+            { label: 'Release Contribution', value: 1.0, weight: 0.2, description: 'Successfully launched MWS AI Platform.' },
+            { label: 'Cross-Team Help', value: 0.95, weight: 0.15, description: 'Active Prideboard participation.' }
+          ]
+        },
+        hardSkills: {
+          code: 'E2',
+          title: 'Skills & Growth',
+          score: 9.5,
+          formula: '1 + 9 * clamp(0.35·COMP_LEVEL + 0.25·COMP_GROWTH + 0.25·LEARNING + 0.15·BUDDY)',
+          components: [
+            { label: 'Competence Level', value: 0.99, weight: 0.35, description: 'E10 Executive Competency Matrix' },
+            { label: 'Growth Score', value: 0.80, weight: 0.25, description: 'New market expansion skills.' },
+            { label: 'Learning Activity', value: 0.90, weight: 0.25, description: 'Completed MBA Executive module.' },
+            { label: 'Buddy Program', value: 1.0, weight: 0.15, description: 'Mentoring 3 Department Heads.' }
+          ]
+        },
+        softSkills: {
+          code: 'E3',
+          title: 'Collaboration & Culture',
+          score: 9.8,
+          formula: '1 + 9 * clamp(0.4·FEEDBACK + 0.25·KUDOS + 0.2·COMMUNITY + 0.15·MENTORING)',
+          components: [
+            { label: '360 Feedback', value: 0.98, weight: 0.4, description: 'Exceptionally positive peer reviews.' },
+            { label: 'Kudos Received', value: 0.95, weight: 0.25, description: 'Top receiver in "Visionary" category.' },
+            { label: 'Community Events', value: 0.90, weight: 0.2, description: 'Speaker at Town Hall.' },
+            { label: 'Mentoring Activity', value: 1.0, weight: 0.15, description: 'Coaching C-level peers.' }
+          ]
+        },
+        sustainability: {
+          code: 'E4',
+          title: 'Sustainability & Well-being',
+          score: 7.5,
+          formula: '1 + 9 * clamp(0.3·MEETING + 0.3·(1−OVERTIME) + 0.2·VACATION + 0.2·SELF_STATE)',
+          components: [
+            { label: 'Meeting Load', value: 0.40, weight: 0.3, description: 'High meeting density (Risk).' },
+            { label: 'Overtime Indicator', value: 0.60, weight: 0.3, description: 'Frequent late hours.' },
+            { label: 'Vacation Freshness', value: 0.90, weight: 0.2, description: 'Returned from leave 1 month ago.' },
+            { label: 'Pulse Self-State', value: 0.85, weight: 0.2, description: 'Self-reported high energy.' }
+          ]
+        }
+      },
+      sources: ['Board Review', 'Financial Reports', '360 Feedback'],
+      summary: 'Exceptional strategic vision and execution. consistently exceeding OKR targets for the entire ecosystem.',
+      recommendations: [
+        'Focus on expanding international partnerships',
+        'Mentor L-1 executives on crisis management'
+      ]
+    }
+  },
+  { 
+    id: 2, 
+    name: 'Oleg Sidorenkov', 
+    role: 'CTO', 
+    dept: 'Engineering', 
+    grade: 'E9', 
+    score: 9.8, 
+    potential: 'High', 
+    status: 'Top Performer', 
+    avatar: 'https://i.pravatar.cc/150?u=oleg',
+    details: {
+      metrics: { 
+        delivery: {
+          code: 'E1',
+          title: 'Contribution & Impact',
+          score: 9.8,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Task Completion', value: 0.95, weight: 0.4, description: 'High velocity on architecture tasks.' },
+            { label: 'Incident Contribution', value: 1.0, weight: 0.25, description: 'Solved 2 P0 incidents.' },
+            { label: 'Release Contribution', value: 0.9, weight: 0.2, description: 'Core platform migration.' },
+            { label: 'Cross-Team Help', value: 0.8, weight: 0.15, description: 'Consulted Security team.' }
+          ]
+        },
+        hardSkills: {
+          code: 'E2',
+          title: 'Skills & Growth',
+          score: 9.9,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Competence Level', value: 1.0, weight: 0.35, description: 'Technical Mastery.' },
+            { label: 'Growth Score', value: 0.9, weight: 0.25, description: 'Learned Rust for new microkernel.' },
+            { label: 'Learning Activity', value: 0.85, weight: 0.25, description: 'Internal tech talks.' },
+            { label: 'Buddy Program', value: 0.7, weight: 0.15, description: 'Occasional shadowing.' }
+          ]
+        },
+        softSkills: {
+          code: 'E3',
+          title: 'Collaboration & Culture',
+          score: 8.5,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: '360 Feedback', value: 0.8, weight: 0.4, description: 'Direct communicator, sometimes blunt.' },
+            { label: 'Kudos Received', value: 0.9, weight: 0.25, description: 'Technical excellence awards.' },
+            { label: 'Community Events', value: 0.7, weight: 0.2, description: 'Attends but rarely presents.' },
+            { label: 'Mentoring Activity', value: 0.9, weight: 0.15, description: 'Mentoring Principal Engineers.' }
+          ]
+        },
+        sustainability: {
+          code: 'E4',
+          title: 'Sustainability & Well-being',
+          score: 6.2,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Meeting Load', value: 0.3, weight: 0.3, description: 'Overloaded with syncs.' },
+            { label: 'Overtime Indicator', value: 0.4, weight: 0.3, description: 'Weekend commits detected.' },
+            { label: 'Vacation Freshness', value: 0.2, weight: 0.2, description: 'No vacation > 6 months.' },
+            { label: 'Pulse Self-State', value: 0.8, weight: 0.2, description: 'Driven but tired.' }
+          ]
+        }
+      },
+      sources: ['GitHub', 'Jira Velocity', 'Tech Radar'],
+      summary: 'Technically flawless, driving the architecture forward. Could delegate more operational meetings.',
+      recommendations: [
+        'Delegate architecture review for non-critical services',
+        'Increase visibility in external tech conferences'
+      ]
+    }
+  },
+  { 
+    id: 3, 
+    name: 'Igor Malysh', 
+    role: 'Chief DevEx', 
+    dept: 'Platform', 
+    grade: 'E8', 
+    score: 9.5, 
+    potential: 'High', 
+    status: 'Rising Star', 
+    avatar: 'https://i.pravatar.cc/150?u=igor',
+    details: {
+      metrics: { 
+        delivery: {
+          code: 'E1',
+          title: 'Contribution & Impact',
+          score: 9.5,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Task Completion', value: 0.95, weight: 0.4, description: 'DevEx roadmap on track.' },
+            { label: 'Incident Contribution', value: 0.8, weight: 0.25, description: 'Stable platform metrics.' },
+            { label: 'Release Contribution', value: 0.9, weight: 0.2, description: 'Released CLI v2.' },
+            { label: 'Cross-Team Help', value: 1.0, weight: 0.15, description: 'Top Prideboard contributor.' }
+          ]
+        },
+        hardSkills: {
+          code: 'E2',
+          title: 'Skills & Growth',
+          score: 9.2,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Competence Level', value: 0.9, weight: 0.35, description: 'Strong DevOps skill set.' },
+            { label: 'Growth Score', value: 0.95, weight: 0.25, description: 'Rapidly adopting AI tools.' },
+            { label: 'Learning Activity', value: 0.9, weight: 0.25, description: 'Certifications.' },
+            { label: 'Buddy Program', value: 0.85, weight: 0.15, description: 'Onboarding lead.' }
+          ]
+        },
+        softSkills: {
+          code: 'E3',
+          title: 'Collaboration & Culture',
+          score: 9.0,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: '360 Feedback', value: 0.9, weight: 0.4, description: 'Highly appreciated by devs.' },
+            { label: 'Kudos Received', value: 0.95, weight: 0.25, description: '"Developer Happiness" champion.' },
+            { label: 'Community Events', value: 0.8, weight: 0.2, description: 'Hackathon organizer.' },
+            { label: 'Mentoring Activity', value: 0.8, weight: 0.15, description: 'Mentoring Junior DevOps.' }
+          ]
+        },
+        sustainability: {
+          code: 'E4',
+          title: 'Sustainability & Well-being',
+          score: 8.8,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Meeting Load', value: 0.8, weight: 0.3, description: 'Balanced calendar.' },
+            { label: 'Overtime Indicator', value: 0.9, weight: 0.3, description: 'Healthy work-life balance.' },
+            { label: 'Vacation Freshness', value: 0.8, weight: 0.2, description: 'Recent mini-break.' },
+            { label: 'Pulse Self-State', value: 0.9, weight: 0.2, description: 'Highly motivated.' }
+          ]
+        }
+      },
+      sources: ['Platform Usage Metrics', 'Team eNPS', 'Gitlab'],
+      summary: 'Significantly improved developer satisfaction metrics. CI/CD pipeline efficiency up by 40%.',
+      recommendations: [
+        'Scale the internal developer advocacy program',
+        'Document the new platform standards for onboarding'
+      ]
+    }
+  },
+  { 
+    id: 5, 
+    name: 'Artem Zhulin', 
+    role: 'Head of WB', 
+    dept: 'Product', 
+    grade: 'E8', 
+    score: 8.8, 
+    potential: 'Medium', 
+    status: 'Rising Star', 
+    avatar: 'https://i.pravatar.cc/150?u=artem',
+    details: {
+      metrics: { 
+        delivery: {
+          code: 'E1',
+          title: 'Contribution & Impact',
+          score: 8.2,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Task Completion', value: 0.7, weight: 0.4, description: 'Missed Q3 deadlines.' },
+            { label: 'Incident Contribution', value: 0.9, weight: 0.25, description: 'Good crisis handling.' },
+            { label: 'Release Contribution', value: 0.8, weight: 0.2, description: 'WB feature launch.' },
+            { label: 'Cross-Team Help', value: 0.7, weight: 0.15, description: 'Focused on own silo.' }
+          ]
+        },
+        hardSkills: {
+          code: 'E2',
+          title: 'Skills & Growth',
+          score: 8.0,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Competence Level', value: 0.85, weight: 0.35, description: 'Good product sense.' },
+            { label: 'Growth Score', value: 0.7, weight: 0.25, description: 'Needs analytics upskilling.' },
+            { label: 'Learning Activity', value: 0.6, weight: 0.25, description: 'Skipped last workshop.' },
+            { label: 'Buddy Program', value: 0.8, weight: 0.15, description: 'Good peer support.' }
+          ]
+        },
+        softSkills: {
+          code: 'E3',
+          title: 'Collaboration & Culture',
+          score: 8.5,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: '360 Feedback', value: 0.85, weight: 0.4, description: 'Collaborative but disorganized.' },
+            { label: 'Kudos Received', value: 0.8, weight: 0.25, description: 'Team player.' },
+            { label: 'Community Events', value: 0.9, weight: 0.2, description: 'Active networker.' },
+            { label: 'Mentoring Activity', value: 0.7, weight: 0.15, description: 'Ad-hoc mentoring.' }
+          ]
+        },
+        sustainability: {
+          code: 'E4',
+          title: 'Sustainability & Well-being',
+          score: 5.5,
+          formula: '1 + 9 * clamp(...)',
+          components: [
+            { label: 'Meeting Load', value: 0.2, weight: 0.3, description: 'Meeting overload.' },
+            { label: 'Overtime Indicator', value: 0.5, weight: 0.3, description: 'Late nights common.' },
+            { label: 'Vacation Freshness', value: 0.4, weight: 0.2, description: 'Needs a break.' },
+            { label: 'Pulse Self-State', value: 0.6, weight: 0.2, description: 'Stress levels rising.' }
+          ]
+        }
+      },
+      sources: ['Product Analytics', 'Jira', 'Stakeholder Feedback'],
+      summary: 'Great product sense, but delivery consistency has fluctuated due to scope creep.',
+      recommendations: [
+        'Improve estimation accuracy for Q4 roadmap',
+        'Take "Advanced Product Analytics" course',
+        'Focus on reducing technical debt in the backlog'
+      ]
+    }
+  },
 ];
 
 const EmployeeView: React.FC = () => {
   const [employees, setEmployees] = useState(initialEmployees);
-  const [activeModal, setActiveModal] = useState<'add' | 'git' | 'training' | 'actions' | null>(null);
+  const [activeModal, setActiveModal] = useState<'add' | 'git' | 'training' | 'actions' | 'metric_detail' | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
+  const [selectedMetric, setSelectedMetric] = useState<PerformanceMetric | null>(null);
+  const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
   
   // Training Selection State
   const [trainingSelection, setTrainingSelection] = useState<{ selectedEmpIds: number[], course: string | null }>({
@@ -23,22 +362,6 @@ const EmployeeView: React.FC = () => {
 
   const handleAddEmployee = (e: React.FormEvent) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    
-    const newEmp = {
-      id: employees.length + 1,
-      name: formData.get('name') as string,
-      role: formData.get('role') as string,
-      dept: formData.get('dept') as string,
-      grade: 'E4',
-      score: 7.0,
-      potential: 'New',
-      status: 'New Hire',
-      avatar: `https://i.pravatar.cc/150?u=${(formData.get('name') as string).replace(/\s/g, '')}`
-    };
-    
-    setEmployees([...employees, newEmp]);
     setActiveModal(null);
   };
 
@@ -55,13 +378,18 @@ const EmployeeView: React.FC = () => {
   };
 
   const handleAssignTraining = () => {
-    if (trainingSelection.selectedEmpIds.length === 0 || !trainingSelection.course) {
-      alert("Please select at least one employee and one course.");
-      return;
-    }
     alert(`Assigned "${trainingSelection.course}" to ${trainingSelection.selectedEmpIds.length} employees.`);
     setActiveModal(null);
     setTrainingSelection({ selectedEmpIds: [], course: null });
+  };
+
+  const toggleExpand = (id: number) => {
+    setExpandedEmployeeId(expandedEmployeeId === id ? null : id);
+  };
+
+  const openMetricDetail = (metric: PerformanceMetric) => {
+    setSelectedMetric(metric);
+    setActiveModal('metric_detail');
   };
 
   return (
@@ -95,66 +423,193 @@ const EmployeeView: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
               {employees.map((emp) => (
-                <tr key={emp.id} className="hover:bg-red-50/20 dark:hover:bg-red-900/10 transition-colors group relative">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <img src={emp.avatar} alt={emp.name} className="w-10 h-10 rounded-full object-cover border border-gray-100 dark:border-slate-600" />
-                      <div>
-                        <div className="font-bold text-slate-800 dark:text-white">{emp.name}</div>
-                        <div className="text-xs text-gray-400">MTS Web Services</div>
+                <React.Fragment key={emp.id}>
+                  <tr 
+                    onClick={() => toggleExpand(emp.id)}
+                    className={`cursor-pointer transition-colors group relative ${expandedEmployeeId === emp.id ? 'bg-gray-50 dark:bg-slate-700/50' : 'hover:bg-red-50/20 dark:hover:bg-red-900/10'}`}
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                           <img src={emp.avatar} alt={emp.name} className="w-10 h-10 rounded-full object-cover border border-gray-100 dark:border-slate-600" />
+                           {expandedEmployeeId === emp.id ? (
+                             <ChevronUp size={14} className="absolute -bottom-1 -right-1 bg-white dark:bg-slate-800 rounded-full text-gray-500" />
+                           ) : (
+                             <ChevronDown size={14} className="absolute -bottom-1 -right-1 bg-white dark:bg-slate-800 rounded-full text-gray-500" />
+                           )}
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-800 dark:text-white">{emp.name}</div>
+                          <div className="text-xs text-gray-400">MTS Web Services</div>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-slate-700 dark:text-gray-200">{emp.role}</div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-[10px] text-gray-400 uppercase tracking-wide">{emp.dept}</span>
-                      <span className="inline-block px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 text-[10px] font-bold">
-                        {emp.grade}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-slate-700 dark:text-gray-200">{emp.role}</div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wide">{emp.dept}</span>
+                        <span className="inline-block px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 text-[10px] font-bold">
+                          {emp.grade}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                         <div className="w-12 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                           <div className="h-full bg-[#E30611] rounded-full" style={{ width: `${emp.score * 10}%` }}></div>
+                         </div>
+                         <span className="text-sm font-bold text-slate-700 dark:text-gray-200">{emp.score}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`text-sm ${emp.potential === 'High' ? 'text-green-600 dark:text-green-400 font-bold' : 'text-yellow-600 dark:text-yellow-400 font-medium'}`}>
+                        {emp.potential}
                       </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                       <div className="w-12 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                         <div className="h-full bg-[#E30611] rounded-full" style={{ width: `${emp.score * 10}%` }}></div>
-                       </div>
-                       <span className="text-sm font-bold text-slate-700 dark:text-gray-200">{emp.score}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`text-sm ${emp.potential === 'High' ? 'text-green-600 dark:text-green-400 font-bold' : 'text-yellow-600 dark:text-yellow-400 font-medium'}`}>
-                      {emp.potential}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold
-                      ${emp.status === 'Top Performer' ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' : 
-                        emp.status === 'Rising Star' ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 
-                        emp.status === 'Needs Support' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : 
-                        emp.status === 'New Hire' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300'
-                      }`}>
-                      {emp.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 relative">
-                    <button 
-                      onClick={() => { setSelectedEmployee(emp); setActiveModal('actions'); }}
-                      className="text-gray-400 hover:text-[#E30611] transition-colors"
-                    >
-                      <MoreHorizontal size={18} />
-                    </button>
-                    {/* Actions Context Menu */}
-                    {activeModal === 'actions' && selectedEmployee?.id === emp.id && (
-                       <div className="absolute top-10 right-10 w-48 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-700 shadow-xl rounded-xl z-10 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-100">
-                          <button onClick={() => setActiveModal(null)} className="text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-slate-700 text-sm text-slate-700 dark:text-gray-200">View Profile</button>
-                          <button onClick={() => { setActiveModal(null); alert('Review requested'); }} className="text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-slate-700 text-sm text-slate-700 dark:text-gray-200">Request Review</button>
-                          <div className="h-px bg-gray-100 dark:bg-slate-700 my-1"></div>
-                          <button onClick={() => setActiveModal(null)} className="text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm text-[#E30611]">Archive</button>
-                       </div>
-                    )}
-                  </td>
-                </tr>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold
+                        ${emp.status === 'Top Performer' ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' : 
+                          emp.status === 'Rising Star' ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 
+                          emp.status === 'Needs Support' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : 
+                          emp.status === 'New Hire' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300'
+                        }`}>
+                        {emp.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 relative">
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); setSelectedEmployee(emp); setActiveModal('actions'); }}
+                        className="text-gray-400 hover:text-[#E30611] transition-colors"
+                      >
+                        <MoreHorizontal size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                  
+                  {/* EXPANDED DETAILS SECTION */}
+                  {expandedEmployeeId === emp.id && (
+                    <tr className="bg-gray-50/50 dark:bg-slate-800/50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <td colSpan={6} className="p-0">
+                        <div className="p-6 border-b border-gray-100 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                          
+                          {/* COL 1: Interactive Metrics */}
+                          <div className="space-y-6">
+                             <div>
+                               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                 <Target size={14} /> Performance Metrics (Click for Details)
+                               </h4>
+                               <div className="space-y-4">
+                                 {/* Delivery (E1) */}
+                                 <div className="group/metric cursor-pointer" onClick={() => openMetricDetail(emp.details.metrics.delivery)}>
+                                    <div className="flex justify-between text-xs mb-1 group-hover/metric:text-[#E30611] transition-colors">
+                                       <span className="font-bold flex items-center gap-2">
+                                          <Zap size={12} /> Delivery (E1)
+                                       </span>
+                                       <span className="font-bold">{emp.details.metrics.delivery.score}</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-gray-200 dark:bg-slate-600 rounded-full overflow-hidden">
+                                       <div className="h-full bg-[#E30611] rounded-full relative" style={{ width: `${emp.details.metrics.delivery.score * 10}%` }}></div>
+                                    </div>
+                                 </div>
+
+                                 {/* Hard Skills (E2) */}
+                                 <div className="group/metric cursor-pointer" onClick={() => openMetricDetail(emp.details.metrics.hardSkills)}>
+                                    <div className="flex justify-between text-xs mb-1 group-hover/metric:text-blue-500 transition-colors">
+                                       <span className="font-bold flex items-center gap-2">
+                                          <BookOpen size={12} /> Hard Skills (E2)
+                                       </span>
+                                       <span className="font-bold">{emp.details.metrics.hardSkills.score}</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-gray-200 dark:bg-slate-600 rounded-full overflow-hidden">
+                                       <div className="h-full bg-blue-500 rounded-full" style={{ width: `${emp.details.metrics.hardSkills.score * 10}%` }}></div>
+                                    </div>
+                                 </div>
+
+                                 {/* Soft Skills (E3) */}
+                                 <div className="group/metric cursor-pointer" onClick={() => openMetricDetail(emp.details.metrics.softSkills)}>
+                                    <div className="flex justify-between text-xs mb-1 group-hover/metric:text-green-500 transition-colors">
+                                       <span className="font-bold flex items-center gap-2">
+                                          <Users size={12} /> Soft Skills (E3)
+                                       </span>
+                                       <span className="font-bold">{emp.details.metrics.softSkills.score}</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-gray-200 dark:bg-slate-600 rounded-full overflow-hidden">
+                                       <div className="h-full bg-green-500 rounded-full" style={{ width: `${emp.details.metrics.softSkills.score * 10}%` }}></div>
+                                    </div>
+                                 </div>
+
+                                 {/* Sustainability (E4) */}
+                                 <div className="group/metric cursor-pointer" onClick={() => openMetricDetail(emp.details.metrics.sustainability)}>
+                                    <div className="flex justify-between text-xs mb-1 group-hover/metric:text-orange-500 transition-colors">
+                                       <span className="font-bold flex items-center gap-2">
+                                          <Battery size={12} /> Well-being (E4)
+                                       </span>
+                                       <span className="font-bold">{emp.details.metrics.sustainability.score}</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-gray-200 dark:bg-slate-600 rounded-full overflow-hidden">
+                                       <div 
+                                         className={`h-full rounded-full transition-all ${emp.details.metrics.sustainability.score < 6 ? 'bg-red-500' : 'bg-orange-500'}`} 
+                                         style={{ width: `${emp.details.metrics.sustainability.score * 10}%` }}
+                                       ></div>
+                                    </div>
+                                 </div>
+                               </div>
+                             </div>
+                             
+                             <div>
+                               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                 <Database size={14} /> Data Sources
+                               </h4>
+                               <div className="flex flex-wrap gap-2">
+                                 {emp.details.sources.map(src => (
+                                   <span key={src} className="px-2 py-1 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-md text-[10px] font-bold text-slate-600 dark:text-gray-300">
+                                     {src}
+                                   </span>
+                                 ))}
+                               </div>
+                             </div>
+                          </div>
+
+                          {/* COL 2: Summary */}
+                          <div className="lg:col-span-2 flex flex-col justify-between">
+                             <div className="mb-6">
+                               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                 <BrainCircuit size={14} /> AI Performance Summary
+                               </h4>
+                               <p className="text-sm leading-relaxed text-slate-700 dark:text-gray-300 bg-white dark:bg-slate-700/30 p-4 rounded-xl border border-gray-100 dark:border-slate-700">
+                                 {emp.details.summary}
+                               </p>
+                             </div>
+
+                             <div>
+                               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                 <Lightbulb size={14} /> Recommended Improvements
+                               </h4>
+                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                 {emp.details.recommendations.map((rec, i) => (
+                                   <div key={i} className="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-100 dark:border-red-900/30">
+                                     <TrendingUp size={16} className="text-[#E30611] shrink-0 mt-0.5" />
+                                     <span className="text-sm font-medium text-slate-800 dark:text-gray-200 leading-tight">{rec}</span>
+                                   </div>
+                                 ))}
+                               </div>
+                             </div>
+
+                             <div className="mt-6 flex justify-end">
+                               <button 
+                                 onClick={() => { setTrainingSelection({ selectedEmpIds: [emp.id], course: null }); setActiveModal('training'); }}
+                                 className="text-sm font-bold text-[#E30611] hover:underline flex items-center gap-2"
+                               >
+                                 Assign Development Plan <ArrowUpRight size={14} />
+                               </button>
+                             </div>
+                          </div>
+
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               ))}
             </tbody>
           </table>
@@ -162,7 +617,17 @@ const EmployeeView: React.FC = () => {
       </div>
       
       {/* Click outside to close actions menu */}
-      {activeModal === 'actions' && <div className="fixed inset-0 z-0" onClick={() => setActiveModal(null)}></div>}
+      {activeModal === 'actions' && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setActiveModal(null)}></div>
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-700 shadow-xl rounded-xl z-50 overflow-hidden flex flex-col w-48">
+             <button onClick={() => setActiveModal(null)} className="text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-700 text-sm text-slate-700 dark:text-gray-200">View Profile</button>
+             <button onClick={() => { setActiveModal(null); alert('Review requested'); }} className="text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-700 text-sm text-slate-700 dark:text-gray-200">Request Review</button>
+             <div className="h-px bg-gray-100 dark:bg-slate-700"></div>
+             <button onClick={() => setActiveModal(null)} className="text-left px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm text-[#E30611]">Archive</button>
+          </div>
+        </>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <div className="bg-gradient-to-br from-[#E30611] to-[#990000] rounded-2xl p-6 text-white shadow-lg relative overflow-hidden group">
@@ -202,6 +667,62 @@ const EmployeeView: React.FC = () => {
       </div>
 
       {/* --- MODALS --- */}
+
+      {/* METRIC DETAIL MODAL (NEW) */}
+      {activeModal === 'metric_detail' && selectedMetric && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setActiveModal(null)}>
+           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+             <div className="bg-slate-50 dark:bg-slate-900/50 p-6 border-b border-gray-100 dark:border-slate-700">
+               <div className="flex justify-between items-start mb-2">
+                 <div>
+                   <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{selectedMetric.code} Metric</span>
+                   <h3 className="text-2xl font-bold text-slate-800 dark:text-white">{selectedMetric.title}</h3>
+                 </div>
+                 <div className="flex items-center gap-2 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-gray-100 dark:border-slate-700 shadow-sm">
+                    <span className="text-2xl font-bold text-[#E30611]">{selectedMetric.score}</span>
+                    <span className="text-xs text-gray-400 font-medium">/ 10</span>
+                 </div>
+               </div>
+               <div className="text-xs font-mono text-slate-500 dark:text-gray-400 bg-gray-100 dark:bg-slate-900 p-2 rounded border border-gray-200 dark:border-slate-700">
+                 Formula: {selectedMetric.formula}
+               </div>
+             </div>
+             
+             <div className="p-6">
+                <h4 className="text-sm font-bold text-slate-800 dark:text-white mb-4">Breakdown & Factors</h4>
+                <div className="space-y-6">
+                   {selectedMetric.components.map((comp, idx) => (
+                     <div key={idx}>
+                       <div className="flex justify-between items-end mb-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold text-slate-700 dark:text-gray-200">{comp.label}</span>
+                            <span className="text-[10px] bg-gray-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-gray-500">
+                              Weight: {comp.weight}
+                            </span>
+                          </div>
+                          <span className="text-sm font-bold text-slate-900 dark:text-white">{(comp.value * 100).toFixed(0)}%</span>
+                       </div>
+                       
+                       <div className="h-2 w-full bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden mb-1">
+                          <div 
+                            className={`h-full rounded-full ${comp.value >= 0.8 ? 'bg-green-500' : comp.value >= 0.5 ? 'bg-yellow-500' : 'bg-red-500'}`} 
+                            style={{ width: `${comp.value * 100}%` }}
+                          ></div>
+                       </div>
+                       <p className="text-xs text-gray-400">{comp.description}</p>
+                     </div>
+                   ))}
+                </div>
+             </div>
+             
+             <div className="p-4 border-t border-gray-100 dark:border-slate-700 flex justify-end">
+               <button onClick={() => setActiveModal(null)} className="px-6 py-2 bg-gray-100 dark:bg-slate-700 text-slate-700 dark:text-white font-bold rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                 Close Details
+               </button>
+             </div>
+           </div>
+        </div>
+      )}
 
       {/* Add Employee Modal */}
       {activeModal === 'add' && (

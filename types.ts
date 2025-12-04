@@ -15,7 +15,8 @@ export type ViewState =
   | 'account' 
   | 'corporate' 
   | 'blog' 
-  | 'messenger';
+  | 'messenger'
+  | 'jira';
 
 export interface User {
   id: string;
