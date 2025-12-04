@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { ViewState } from '../types';
 import { 
@@ -12,7 +13,13 @@ import {
   CreditCard,
   Building2,
   PenTool,
-  Trello
+  Trello,
+  Heart,
+  ShoppingBag,
+  Zap,
+  Compass,
+  Hammer,
+  GitPullRequest
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -98,13 +105,22 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange }) => {
                 Team
               </button>
             </li>
-             <li>
+            <li>
               <button 
                 onClick={() => onViewChange('dashboard-employee')}
                 className={`w-full flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors ${getButtonClass('dashboard-employee')}`}
               >
                 <Briefcase size={18} className={getIconClass('dashboard-employee')} />
                 Employee
+              </button>
+            </li>
+             <li>
+              <button 
+                onClick={() => onViewChange('pr-coach')}
+                className={`w-full flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors ${getButtonClass('pr-coach')}`}
+              >
+                <GitPullRequest size={18} className={getIconClass('pr-coach')} />
+                PR Coach
               </button>
             </li>
             <li>
@@ -147,6 +163,21 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange }) => {
                {/* Indented Submenu */}
                <div className="pl-9 space-y-1 mt-1 border-l-2 border-gray-100 dark:border-slate-700 ml-4">
                  <button onClick={() => onViewChange('profile-overview')} className={`block w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-overview' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>Overview</button>
+                 <button onClick={() => onViewChange('profile-career')} className={`flex items-center gap-2 w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-career' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>
+                    <Compass size={12} className={currentView === 'profile-career' ? 'text-red-600' : 'text-gray-400'} /> Career Simulator
+                 </button>
+                 <button onClick={() => onViewChange('profile-job-crafting')} className={`flex items-center gap-2 w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-job-crafting' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>
+                    <Hammer size={12} className={currentView === 'profile-job-crafting' ? 'text-red-600' : 'text-gray-400'} /> Job Crafting
+                 </button>
+                 <button onClick={() => onViewChange('profile-360')} className={`flex items-center gap-2 w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-360' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>
+                    <Zap size={12} className={currentView === 'profile-360' ? 'text-red-600' : 'text-gray-400'} /> 360 Feedback <span className="text-[9px] px-1 bg-red-100 text-red-600 rounded">DEMO</span>
+                 </button>
+                 <button onClick={() => onViewChange('profile-kudos')} className={`flex items-center gap-2 w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-kudos' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>
+                    <Heart size={12} /> Kudos Wall
+                 </button>
+                 <button onClick={() => onViewChange('profile-shop')} className={`flex items-center gap-2 w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-shop' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>
+                    <ShoppingBag size={12} /> Reward Shop
+                 </button>
                  <button onClick={() => onViewChange('profile-tamagotchi')} className={`block w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-tamagotchi' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>Tamagotchi</button>
                  <button onClick={() => onViewChange('profile-campaigns')} className={`block w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-campaigns' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>Campaigns</button>
                  <button onClick={() => onViewChange('profile-documents')} className={`block w-full text-left text-sm pl-2 py-1 ${currentView === 'profile-documents' ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'}`}>Documents</button>

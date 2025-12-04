@@ -1,13 +1,16 @@
 
+
 import React, { useState } from 'react';
-import { User, Activity, AlertCircle, Radio, MessageSquare, Phone, X } from 'lucide-react';
+import { User, Activity, AlertCircle, Radio, MessageSquare, Phone, X, Compass, Hammer, GitPullRequest } from 'lucide-react';
+import { ViewState } from '../types';
 
 interface RightPanelProps {
   onContactClick: (userId: string) => void;
   onCall?: (contact: any) => void;
+  onViewChange?: (view: ViewState) => void;
 }
 
-const RightPanel: React.FC<RightPanelProps> = ({ onContactClick, onCall }) => {
+const RightPanel: React.FC<RightPanelProps> = ({ onContactClick, onCall, onViewChange }) => {
   const [selectedContact, setSelectedContact] = useState<any>(null);
 
   // Users: Ekaterina Tyukavkina (Me), Andrey Shtanov, Igor Malysh, Oleg Sidorenkov, Artem Zhulin
@@ -52,7 +55,32 @@ const RightPanel: React.FC<RightPanelProps> = ({ onContactClick, onCall }) => {
 
       {/* Activities */}
       <div className="p-6 pb-2 shrink-0">
-        <h3 className="text-sm font-semibold text-slate-800 dark:text-white mb-4">Activities</h3>
+        <div className="flex justify-between items-center mb-4">
+           <h3 className="text-sm font-semibold text-slate-800 dark:text-white">Activities</h3>
+           <div className="flex gap-2">
+             <button 
+               onClick={() => onViewChange && onViewChange('profile-career')}
+               className="p-1.5 bg-gray-100 dark:bg-slate-700 rounded-lg hover:text-[#E30611] transition-colors"
+               title="Quick Career Simulator"
+             >
+               <Compass size={14} />
+             </button>
+             <button 
+               onClick={() => onViewChange && onViewChange('profile-job-crafting')}
+               className="p-1.5 bg-gray-100 dark:bg-slate-700 rounded-lg hover:text-[#E30611] transition-colors"
+               title="Job Crafting"
+             >
+               <Hammer size={14} />
+             </button>
+             <button 
+               onClick={() => onViewChange && onViewChange('pr-coach')}
+               className="p-1.5 bg-gray-100 dark:bg-slate-700 rounded-lg hover:text-[#E30611] transition-colors"
+               title="PR Review Assistant"
+             >
+               <GitPullRequest size={14} />
+             </button>
+           </div>
+        </div>
          <div className="space-y-6 relative">
              <div className="absolute left-4 top-2 bottom-2 w-px bg-gray-100 dark:bg-slate-700"></div>
           

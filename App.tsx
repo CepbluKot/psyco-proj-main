@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import RightPanel from './components/RightPanel';
@@ -10,6 +11,10 @@ import ProjectsView from './views/ProjectsView';
 import LearningView from './views/LearningView';
 import ProfileView from './views/ProfileView';
 import JiraView from './views/JiraView';
+import Feedback360View from './views/Feedback360View';
+import CareerSimulatorView from './views/CareerSimulatorView';
+import JobCraftingView from './views/JobCraftingView';
+import PRCoachView from './views/PRCoachView';
 import { 
   TamagotchiView, 
   AccountView, 
@@ -18,7 +23,9 @@ import {
   FollowersView,
   CorporateView,
   BlogView,
-  OverviewView
+  OverviewView,
+  KudosView,
+  ShopView
 } from './views/GeneralPages';
 import { ViewState } from './types';
 import { Search, Sun, Moon, Bell, Layout, X, ChevronRight, Phone, Mic, MicOff, Video, PhoneOff } from 'lucide-react';
@@ -197,6 +204,7 @@ const App: React.FC = () => {
   const getBreadcrumbs = () => {
     if (currentView === 'messenger') return ['Social', 'Chats'];
     if (currentView.startsWith('dashboard')) return ['Dashboards', currentView.replace('dashboard-', '').replace(/^\w/, c => c.toUpperCase())];
+    if (currentView === 'pr-coach') return ['Dashboards', 'PR Coach'];
     if (currentView.startsWith('profile')) return ['User Profile', currentView.replace('profile-', '').replace(/^\w/, c => c.toUpperCase())];
     if (currentView === 'overview') return ['Favorites', 'Overview'];
     if (currentView === 'projects') return ['Favorites', 'Projects'];
@@ -215,15 +223,21 @@ const App: React.FC = () => {
       case 'dashboard-product': return <DashboardView />;
       case 'dashboard-team': return <TeamView />;
       case 'dashboard-employee': return <EmployeeView />;
+      case 'pr-coach': return <PRCoachView />;
       case 'messenger': return <MessengerView targetUserId={targetChatUser} onClearTarget={() => setTargetChatUser(null)} />;
       case 'projects': return <ProjectsView />;
       case 'courses': return <LearningView />;
       case 'jira': return <JiraView />;
       case 'profile-overview': return <ProfileView />;
+      case 'profile-360': return <Feedback360View />;
+      case 'profile-career': return <CareerSimulatorView />;
+      case 'profile-job-crafting': return <JobCraftingView />;
       case 'profile-tamagotchi': return <TamagotchiView />;
       case 'profile-campaigns': return <CampaignsView />;
       case 'profile-documents': return <DocumentsView />;
       case 'profile-followers': return <FollowersView onMessage={(id) => handleNavigate('messenger', { userId: id })} />;
+      case 'profile-kudos': return <KudosView />;
+      case 'profile-shop': return <ShopView />;
       case 'account': return <AccountView />;
       case 'corporate': return <CorporateView />;
       case 'blog': return <BlogView />;
@@ -239,6 +253,7 @@ const App: React.FC = () => {
     { id: 'dashboard-product', label: 'Product Dashboard', section: 'Dashboards' },
     { id: 'dashboard-team', label: 'Team Dashboard', section: 'Dashboards' },
     { id: 'dashboard-employee', label: 'Employee Dashboard', section: 'Dashboards' },
+    { id: 'pr-coach', label: 'PR Coach', section: 'Dashboards' },
     { id: 'courses', label: 'Online Courses', section: 'Dashboards' },
     { id: 'jira', label: 'Jira Board', section: 'Pages' },
     { id: 'profile-overview', label: 'User Profile', section: 'Pages' },
@@ -432,6 +447,7 @@ const App: React.FC = () => {
            onCall={(contact) => { 
              startCall(contact); 
            }}
+           onViewChange={handleNavigate}
          />
       </div>
     </div>

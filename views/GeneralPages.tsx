@@ -5,7 +5,8 @@ import {
   Users, Zap, ExternalLink, Calendar, Search, ArrowRight, X,
   CheckCircle2, Clock, MapPin, Tag, MessageSquare, Heart, Shield,
   Bell, Lock, LogOut, File, FileSpreadsheet, FileBarChart, Image,
-  Briefcase, Shuffle, BrainCircuit, Sparkles, Trophy, Target, ArrowUpRight
+  Briefcase, Shuffle, BrainCircuit, Sparkles, Trophy, Target, ArrowUpRight,
+  ShoppingBag, Gift, Star, Award, Laptop, Plane, Monitor
 } from 'lucide-react';
 
 // --- SHARED MODAL COMPONENT ---
@@ -35,6 +36,169 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
             Close
           </button>
         </div>
+      </div>
+    </div>
+  );
+};
+
+// --- KUDOS VIEW ---
+export const KudosView: React.FC = () => {
+  const [kudosItems, setKudosItems] = useState([
+    { id: 1, from: 'Igor Malysh', avatar: 'https://i.pravatar.cc/150?u=igor', type: 'Speed', message: 'Thanks for the quick fix on the auth service!', sticker: '🚀', date: '2 hours ago', color: 'bg-blue-50 dark:bg-blue-900/20' },
+    { id: 2, from: 'Oleg Sidorenkov', avatar: 'https://i.pravatar.cc/150?u=oleg', type: 'Leadership', message: 'Great job leading the quarterly planning session.', sticker: '👑', date: 'Yesterday', color: 'bg-yellow-50 dark:bg-yellow-900/20' },
+    { id: 3, from: 'Maria Ivanova', avatar: 'https://i.pravatar.cc/150?u=maria', type: 'Teamwork', message: 'You really helped us out with the onboarding docs.', sticker: '🤝', date: 'Oct 20', color: 'bg-green-50 dark:bg-green-900/20' },
+    { id: 4, from: 'Artem Zhulin', avatar: 'https://i.pravatar.cc/150?u=artem', type: 'Idea', message: 'The new roadmap visualization is genius.', sticker: '💡', date: 'Oct 15', color: 'bg-purple-50 dark:bg-purple-900/20' },
+    { id: 5, from: 'Andrey Shtanov', avatar: 'https://i.pravatar.cc/150?u=andrey', type: 'Support', message: 'Thanks for covering for me during my PTO.', sticker: '❤️', date: 'Oct 10', color: 'bg-pink-50 dark:bg-pink-900/20' },
+  ]);
+
+  return (
+    <div className="h-full overflow-y-auto p-8 custom-scrollbar bg-[#F3F6FD] dark:bg-slate-900">
+      <div className="mb-8 flex justify-between items-end">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+            <Heart size={28} className="text-[#E30611] fill-current" /> Kudos Wall
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400">Appreciation and gratitude from your colleagues.</p>
+        </div>
+        <div className="bg-white dark:bg-slate-800 px-4 py-2 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
+           <span className="text-xs text-gray-500 uppercase font-bold">Total Kudos</span>
+           <div className="text-2xl font-bold text-slate-800 dark:text-white">{kudosItems.length}</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {kudosItems.map((kudos) => (
+          <div key={kudos.id} className={`${kudos.color} p-6 rounded-2xl border border-white/50 dark:border-white/5 shadow-sm hover:shadow-md transition-transform hover:-translate-y-1 relative group`}>
+             <div className="absolute top-4 right-4 text-4xl transform group-hover:scale-110 transition-transform cursor-default select-none">
+               {kudos.sticker}
+             </div>
+             
+             <div className="flex items-center gap-3 mb-4">
+               <img src={kudos.avatar} alt={kudos.from} className="w-10 h-10 rounded-full border-2 border-white dark:border-slate-800" />
+               <div>
+                 <div className="text-sm font-bold text-slate-800 dark:text-white">{kudos.from}</div>
+                 <div className="text-xs text-slate-500 dark:text-gray-400">{kudos.date}</div>
+               </div>
+             </div>
+             
+             <div className="mb-2">
+               <span className="inline-block px-2 py-0.5 bg-white/60 dark:bg-black/20 rounded text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-gray-300">
+                 {kudos.type}
+               </span>
+             </div>
+             
+             <p className="text-slate-700 dark:text-gray-200 text-sm font-medium leading-relaxed italic">
+               "{kudos.message}"
+             </p>
+          </div>
+        ))}
+
+        {/* Placeholder for visual balance */}
+        <div className="border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl p-6 flex flex-col items-center justify-center text-center text-gray-400 min-h-[200px]">
+           <Heart size={32} className="mb-2 opacity-50" />
+           <p className="text-sm font-medium">Keep doing great work to earn more Kudos!</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- SHOP VIEW ---
+export const ShopView: React.FC = () => {
+  const [balance, setBalance] = useState(1250);
+  const [activeCategory, setActiveCategory] = useState<'all' | 'merch' | 'digital'>('all');
+
+  const products = [
+    { id: 1, name: 'MWS Hoodie', category: 'merch', price: 500, image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=300', icon: <ShoppingBag/> },
+    { id: 2, name: 'Remote Work Day', category: 'digital', price: 200, image: 'https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=300', icon: <Laptop/> },
+    { id: 3, name: 'MWS Coffee Mug', category: 'merch', price: 150, image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&q=80&w=300', icon: <Coffee/> },
+    { id: 4, name: 'Extra Vacation Day', category: 'digital', price: 1000, image: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&q=80&w=300', icon: <Plane/> },
+    { id: 5, name: 'Conference Ticket', category: 'digital', price: 800, image: 'https://images.unsplash.com/photo-1544531696-2822a09966ce?auto=format&fit=crop&q=80&w=300', icon: <Users/> },
+    { id: 6, name: 'Pro Monitor Stand', category: 'merch', price: 350, image: 'https://images.unsplash.com/photo-1616628188859-7a11abb6fcc9?auto=format&fit=crop&q=80&w=300', icon: <Monitor/> },
+  ];
+
+  const handleBuy = (price: number, name: string) => {
+    if (balance >= price) {
+      setBalance(prev => prev - price);
+      alert(`Successfully purchased ${name}!`);
+    } else {
+      alert("Not enough M-Coins!");
+    }
+  };
+
+  const filteredProducts = activeCategory === 'all' ? products : products.filter(p => p.category === activeCategory);
+
+  return (
+    <div className="h-full overflow-y-auto p-8 custom-scrollbar bg-[#F3F6FD] dark:bg-slate-900">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+           <h1 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+             <ShoppingBag size={28} className="text-[#E30611]" /> Reward Shop
+           </h1>
+           <p className="text-gray-500 dark:text-gray-400">Exchange your hard-earned M-Coins for perks.</p>
+        </div>
+        
+        <div className="flex items-center gap-4">
+           {/* Balance Card */}
+           <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white px-6 py-3 rounded-2xl shadow-lg flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-yellow-400 text-yellow-900 flex items-center justify-center font-bold text-xl border-2 border-white/20">M</div>
+              <div>
+                <div className="text-[10px] text-gray-400 uppercase font-bold">Your Balance</div>
+                <div className="text-2xl font-bold leading-none">{balance}</div>
+              </div>
+           </div>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+        {['all', 'merch', 'digital'].map(cat => (
+          <button 
+            key={cat}
+            onClick={() => setActiveCategory(cat as any)}
+            className={`px-4 py-2 rounded-full text-sm font-bold capitalize transition-colors
+              ${activeCategory === cat 
+                ? 'bg-[#E30611] text-white' 
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProducts.map(product => (
+          <div key={product.id} className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-lg transition-all flex flex-col group">
+            <div className="h-48 overflow-hidden relative">
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute top-3 left-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-2 rounded-lg text-slate-800 dark:text-white">
+                 {product.icon}
+              </div>
+            </div>
+            
+            <div className="p-6 flex-1 flex flex-col">
+              <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-1">{product.name}</h3>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">{product.category}</span>
+              
+              <div className="mt-auto flex items-center justify-between">
+                <div className="flex items-center gap-1 text-slate-800 dark:text-white">
+                   <span className="text-yellow-500 font-bold text-xl">M</span>
+                   <span className="text-xl font-bold">{product.price}</span>
+                </div>
+                <button 
+                  onClick={() => handleBuy(product.price, product.name)}
+                  disabled={balance < product.price}
+                  className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors
+                    ${balance >= product.price 
+                      ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-[#E30611] dark:hover:bg-gray-200' 
+                      : 'bg-gray-100 dark:bg-slate-700 text-gray-400 cursor-not-allowed'}`}
+                >
+                  {balance >= product.price ? 'Purchase' : 'Need Coins'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
